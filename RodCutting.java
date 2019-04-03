@@ -2,16 +2,58 @@
  * Rod cutting problem described in Chapter 15 of textbook
  */
 public class RodCutting {
-
+	public int max(int a, int b) {
+		if (a > b) {
+			return a;
+		}
+		return b;
+	}
   // Do not change the parameters!
   public int rodCuttingRecur(int rodLength, int[] lengthPrices) {
-    return 0;
+	  int arr[]=new int[rodLength+1];
+	  for(int i=0;i<rodLength+1;i++){
+		  arr[i]=-1;
+	  }  
+	  
+return rodCuttingRecurAux(rodLength,lengthPrices,arr);
   }
 
+  public int rodCuttingRecurAux(int rodLength, int[] lengthPrices, int arr []){
+	   
+	    int q;
+	    
+	    if (arr[rodLength]>=0){
+	    	return arr[rodLength];
+	    }
+	    if (rodLength==0){
+	    	q=0;
+	    }
+	    else{
+	    	q=-1;
+	    	  for(int i=0;i<rodLength;i++){
+	    	    	q=max(q,lengthPrices[i]+rodCuttingRecurAux(rodLength-(i+1), lengthPrices,arr));
+	    	    }
+	    }
+	  arr[rodLength]=q;
+		  return q;
+  }
   // Do not change the parameters!
   public int rodCuttingBottomUp(int rodLength, int[] lengthPrices) {
-    return 0;
+	  int arr[]= new int[rodLength+1];
+	  int q;
+	  arr[0]=0;
+	  for(int j=1;j<rodLength+1;j++){
+		  q=-1;
+		  for(int i=0;i<j;i++){
+			  q=max(q,lengthPrices[i]+arr[j-(i+1)]);
+			  
+		  }
+		  arr[j]=q;
+		
+	  }
+    return arr[rodLength];
   }
+
 
 
   public static void main(String args[]){
